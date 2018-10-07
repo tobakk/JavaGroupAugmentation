@@ -22,9 +22,12 @@ public class GroupAugmentationSimulation implements Runnable {
 
     private List<Group> groupList;
 
+    private List<Floater> floaters;
+
     @Override
     public void run() {
         log.info("Starting simulation..");
+
 
 
         //TODO implement initial stuff
