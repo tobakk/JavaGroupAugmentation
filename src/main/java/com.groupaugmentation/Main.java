@@ -3,6 +3,7 @@ package com.groupaugmentation;
 public class Main {
 
     public static void main(String[] args) {
-        System.out.println("Hello Irene!");
+        GroupAugmentationSimulation simulation = new GroupAugmentationSimulation();
+        simulation.run();
     }
 }
