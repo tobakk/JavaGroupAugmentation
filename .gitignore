@@ -4,3 +4,4 @@ build
 out
 vcs.xml
 *.gradle
+.gradle
