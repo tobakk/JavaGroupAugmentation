@@ -1,10 +1,10 @@
 package com.groupaugmentation;
 
+import com.groupaugmentation.util.IndividualList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 public class Group implements Runnable {
 
@@ -18,12 +18,10 @@ public class Group implements Runnable {
     private BigDecimal realFecundity;
 
 
-    private Breeder breeder;
+    private Individual breeder;
 
-    private List<Helper> helpers;
+    private IndividualList helpers;
 
-
-    List<Individual> individuals;
 
     @Override
     public void run() {

@@ -1,5 +1,6 @@
 package com.groupaugmentation;
 
+import com.groupaugmentation.util.IndividualList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,12 +23,11 @@ public class GroupAugmentationSimulation implements Runnable {
 
     private List<Group> groupList;
 
-    private List<Floater> floaters;
+    private IndividualList floaters;
 
     @Override
     public void run() {
         log.info("Starting simulation..");
-
 
 
         //TODO implement initial stuff
