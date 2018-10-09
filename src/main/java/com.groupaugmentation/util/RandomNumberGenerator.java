@@ -55,24 +55,24 @@ public class RandomNumberGenerator {
 
     public BigDecimal getNextInitDriftNormal() {
         //TODO implement
-        return BigDecimal.ZERO;
+        return BigDecimal.ONE;
     }
 
 
     public BigDecimal getNextGaussianAlpha() {
         //TODO implement
-        return BigDecimal.ZERO;
+        return BigDecimal.ONE;
     }
 
     public BigDecimal getNextGaussianBeta() {
         //TODO implement
-        return BigDecimal.ZERO;
+        return BigDecimal.ONE;
     }
 
 
     public BigDecimal getNextGaussianDrift() {
         //TODO implement
-        return BigDecimal.ZERO;
+        return BigDecimal.ONE;
     }
 
     public static synchronized RandomNumberGenerator getInstance() {
