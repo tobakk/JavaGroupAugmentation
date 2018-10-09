@@ -1,26 +1,79 @@
 package com.groupaugmentation.util;
 
-import org.apache.commons.math3.distribution.PoissonDistribution;
+import com.groupaugmentation.Settings;
+import org.apache.commons.math3.distribution.UniformIntegerDistribution;
+import org.apache.commons.math3.distribution.UniformRealDistribution;
+import org.apache.commons.math3.random.GaussianRandomGenerator;
 import org.apache.commons.math3.random.RandomGenerator;
-import org.apache.commons.math3.random.RandomGeneratorFactory;
-import org.apache.commons.math3.random.UniformRandomGenerator;
 
+import java.math.BigDecimal;
 import java.util.Random;
+
 
 public class RandomNumberGenerator {
 
 
     private static RandomNumberGenerator instance;
 
+    private RandomGenerator rnd;
+
+    private GaussianRandomGenerator gaussianRandomGenerator;
+
+    private UniformRealDistribution uniformRealDistribution;
+
+    private UniformIntegerDistribution uniformIntegerDistribution;
+
+    private UniformRealDistribution uniformDoubleDistribution;
+
 
     private RandomNumberGenerator() {
-        PoissonDistribution poissonDistribution;
 
-        UniformRandomGenerator uniform;
+
+        Random random = new Random(3);
+
+
+        //initialize Uniform Random Number Generator
+        uniformRealDistribution = new UniformRealDistribution(0, 1);
+        uniformRealDistribution.reseedRandomGenerator(Settings.RNG_SEED);
+
+        //initialize Uniform Random Number Generator
+        uniformIntegerDistribution = new UniformIntegerDistribution(Settings.UNIFORM_REAL_LOWER_BOUND, Settings.UNIFORM_REAL_UPPER_BOUND);
+        uniformIntegerDistribution.reseedRandomGenerator(Settings.RNG_SEED + 1);
+
+
+        //initialize Uniform Random Number Generator
+        uniformDoubleDistribution = new UniformRealDistribution(Settings.UNIFORM_REAL_LOWER_BOUND, Settings.UNIFORM_REAL_UPPER_BOUND);
+        uniformDoubleDistribution.reseedRandomGenerator(Settings.RNG_SEED + 2);
 
 
     }
 
+    public double getNextRealUniform() {
+        return uniformRealDistribution.sample();
+    }
+
+
+    public BigDecimal getNextInitDriftNormal() {
+        //TODO implement
+        return BigDecimal.ZERO;
+    }
+
+
+    public BigDecimal getNextGaussianAlpha() {
+        //TODO implement
+        return BigDecimal.ZERO;
+    }
+
+    public BigDecimal getNextGaussianBeta() {
+        //TODO implement
+        return BigDecimal.ZERO;
+    }
+
+
+    public BigDecimal getNextGaussianDrift() {
+        //TODO implement
+        return BigDecimal.ZERO;
+    }
 
     public static synchronized RandomNumberGenerator getInstance() {
         if (instance == null) {

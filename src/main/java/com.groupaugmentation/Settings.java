@@ -4,8 +4,19 @@ import java.math.BigDecimal;
 
 public interface Settings {
 
-    int MAX_COLONIES = 50;
+    int MAX_COLONIES = 2;
     int NUMBER_OF_GENERATIONS = 100;
+
+
+    //Random number generation
+    int RNG_SEED = 1;
+    int UNIFORM_REAL_UPPER_BOUND = 1;
+    int UNIFORM_REAL_LOWER_BOUND = 0;
+
+
+
+
+
 
     //    //Fix values
 // double m         = 0.8;       // predation pressure
