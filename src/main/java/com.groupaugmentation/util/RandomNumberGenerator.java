@@ -53,26 +53,26 @@ public class RandomNumberGenerator {
     }
 
 
-    public BigDecimal getNextInitDriftNormal() {
+    public double getNextInitDriftNormal() {
         //TODO implement
-        return BigDecimal.ONE;
+        return 1;
     }
 
 
-    public BigDecimal getNextGaussianAlpha() {
+    public double getNextGaussianAlpha() {
         //TODO implement
-        return BigDecimal.ONE;
+        return 1;
     }
 
-    public BigDecimal getNextGaussianBeta() {
+    public double getNextGaussianBeta() {
         //TODO implement
-        return BigDecimal.ONE;
+        return 1;
     }
 
 
-    public BigDecimal getNextGaussianDrift() {
+    public double getNextGaussianDrift() {
         //TODO implement
-        return BigDecimal.ONE;
+        return 1;
     }
 
     public static synchronized RandomNumberGenerator getInstance() {

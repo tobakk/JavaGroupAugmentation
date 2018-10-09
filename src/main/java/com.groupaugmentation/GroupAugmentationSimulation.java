@@ -1,6 +1,7 @@
 package com.groupaugmentation;
 
 import com.groupaugmentation.util.IndividualList;
+import com.groupaugmentation.util.RandomNumberGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,6 +13,7 @@ public class GroupAugmentationSimulation implements Runnable {
     public GroupAugmentationSimulation() {
 
         groupList = new ArrayList<>();
+        floaters = new IndividualList(FishType.FLOATER);
 
     }
 
@@ -36,6 +38,7 @@ public class GroupAugmentationSimulation implements Runnable {
             for (Group group : groupList) {
                 group.run();
             }
+            this.dispersal();
 
         }
 
@@ -48,6 +51,38 @@ public class GroupAugmentationSimulation implements Runnable {
             groupList.add(new Group());
         }
 
+    }
 
+
+    private void dispersal() {
+        log.trace("dispersal() start");
+        groupList.forEach(group -> log.trace("Helper Size: " + group.getHelpers().size()));
+        log.trace("Floater Size: " + floaters.size());
+        List<Individual> toRemove = new ArrayList<>();
+
+        groupList.forEach(group -> {
+            group.getHelpers().forEach(individual -> {
+
+                        var rnd = RandomNumberGenerator.getInstance().getNextRealUniform();
+
+                        var dispersalFormula = 1 / (1 + Math.pow(Math.E, individual.getDispersal() * -1));
+
+                        if (rnd < dispersalFormula) {
+                            individual.setFishType(FishType.FLOATER);
+                            this.floaters.add(individual);
+                            toRemove.add(individual);
+
+                            log.trace("Individual is a Floater now: " + individual);
+                        }
+
+                        individual.getDispersal();
+                    }
+            );
+            toRemove.forEach(individual -> group.getHelpers().remove(individual));
+        });
+
+        groupList.forEach(group -> log.trace("Helper Size: " + group.getHelpers().size()));
+        log.trace("Floater Size: " + floaters.size());
+        log.trace("dispersal() end");
     }
 }

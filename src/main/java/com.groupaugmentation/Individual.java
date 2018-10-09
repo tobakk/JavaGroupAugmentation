@@ -11,11 +11,15 @@ public class Individual {
 
     private final Logger log = LoggerFactory.getLogger(Individual.class);
 
-    private BigDecimal alpha;
+    private double alpha;
 
-    private BigDecimal beta;
+    private double beta;
 
-    private BigDecimal drift;
+    private double drift;
+
+    private double helpLevel;
+
+    private double dispersal;
 
 
     /**
@@ -38,33 +42,40 @@ public class Individual {
         this.fishType = FishType.HELPER;
 
         if (rng.getNextRealUniform() < Settings.MUTATION_ALPHA) {
-            this.alpha = this.alpha.add(rng.getNextGaussianAlpha());
+            this.alpha += rng.getNextGaussianAlpha();
         }
 
         if (rng.getNextRealUniform() < Settings.MUTATION_BETA) {
-            this.beta = this.beta.add(rng.getNextGaussianBeta());
+            this.beta += rng.getNextGaussianBeta();
         }
 
         if (rng.getNextRealUniform() < Settings.MUTATION_DRIFT) {
-            this.drift = this.drift.add(rng.getNextGaussianDrift());
+            this.drift += rng.getNextGaussianDrift();
         }
 
-        log.trace("New Offspring with ALPHA: " + this.alpha + " BETA: " + this.beta + " DRIFT: " + this.drift);
+        //helplevel is always absolute alpha
+        this.helpLevel = Math.abs(this.alpha);
+        this.dispersal = Math.abs(this.beta);
+
+        log.trace("New Offspring: " + this);
 
     }
 
-
-    public Individual(BigDecimal alpha, BigDecimal beta, FishType fishType) {
+    //constructor called when initializing new Individual
+    public Individual(double alpha, double beta, FishType fishType) {
         this(alpha, beta);
         this.fishType = fishType;
     }
 
-
-    public Individual(BigDecimal alpha, BigDecimal beta) {
+    //constructor called when initializing new Individual
+    public Individual(double alpha, double beta) {
         this.fishType = FishType.HELPER;
         this.alpha = alpha;
         this.beta = beta;
         this.drift = RandomNumberGenerator.getInstance().getNextInitDriftNormal();
+
+        this.helpLevel = Math.abs(alpha);
+        this.dispersal = Math.abs(beta);
     }
 
     private FishType fishType;
@@ -74,19 +85,41 @@ public class Individual {
         return fishType;
     }
 
+
+    public double getAlpha() {
+        return alpha;
+    }
+
+    public double getBeta() {
+        return beta;
+    }
+
+    public double getDrift() {
+        return drift;
+    }
+
+    public double getHelpLevel() {
+        return helpLevel;
+    }
+
+    public double getDispersal() {
+        return dispersal;
+    }
+
     public void setFishType(FishType fishType) {
         this.fishType = fishType;
     }
 
-    public BigDecimal getAlpha() {
-        return alpha;
-    }
 
-    public BigDecimal getBeta() {
-        return beta;
-    }
-
-    public BigDecimal getDrift() {
-        return drift;
+    @Override
+    public String toString() {
+        return "Individual{" +
+                "alpha=" + alpha +
+                ", beta=" + beta +
+                ", drift=" + drift +
+                ", helpLevel=" + helpLevel +
+                ", dispersal=" + dispersal +
+                ", fishType=" + fishType +
+                '}';
     }
 }

@@ -14,10 +14,6 @@ public interface Settings {
     int UNIFORM_REAL_LOWER_BOUND = 0;
 
 
-
-
-
-
     //    //Fix values
 // double m         = 0.8;       // predation pressure
 ////const double Pd        = 0.5;       // propensity to disperse
@@ -33,10 +29,10 @@ public interface Settings {
 //
 //
 //Genetic values
-    BigDecimal INIT_ALPHA = new BigDecimal("0");     // starting value of alpha (in gen 0)
+    double INIT_ALPHA = 0;    // starting value of alpha (in gen 0)
     double MUTATION_ALPHA = 0.05;    // mutation rate in alpha for level of help
     double STEP_ALPHA = 0.4;     // mutation step size in alpha for level of help
-    BigDecimal INIT_BETA = new BigDecimal("0");     // starting value of beta (in gen 0)
+    double INIT_BETA = 0;     // starting value of beta (in gen 0)
     double MUTATION_BETA = 0.05;    // mutation rate in beta for the propensity to disperse
     double STEP_BETA = 0.4;     // mutation step size in beta for the propensity to disperse
     double MUTATION_DRIFT = 0.05;    // mutation rate in the neutral genetic value to track level of relatedness

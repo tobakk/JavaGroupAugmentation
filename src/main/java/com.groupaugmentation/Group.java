@@ -4,7 +4,6 @@ import com.groupaugmentation.util.IndividualList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.math.BigDecimal;
 
 public class Group implements Runnable {
 
@@ -12,10 +11,10 @@ public class Group implements Runnable {
 
     private boolean isBreederAlive;
 
-    private BigDecimal accumulativeHelp = null;
-    private BigDecimal fecundity = null;
+    private double accumulativeHelp = -1;
+    private double fecundity = -1;
 
-    private BigDecimal realFecundity = null;
+    private int realFecundity = -1;
 
 
     private Individual breeder;
@@ -44,7 +43,27 @@ public class Group implements Runnable {
             helpers.add(offspring);
         }
 
+//
+
     }
 
 
+    public void calculateCumulativeHelp() {
+        log.trace("calculating cumulative help");
+        //this line below does this baically ;)
+        //for(Individual individual: helpers){
+        //this.accumulativeHelp = this.accumulativeHelp.add(individual.getHelpLevel());
+        //}
+        //
+
+        //calculate cumulative help
+        helpers.forEach(individual -> this.accumulativeHelp += individual.getHelpLevel());
+        this.accumulativeHelp += breeder.getHelpLevel();
+
+        log.trace("Cumulative Help is: " + this.accumulativeHelp);
+    }
+
+    public IndividualList getHelpers() {
+        return helpers;
+    }
 }
