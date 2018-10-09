@@ -12,12 +12,11 @@ public class GroupAugmentationSimulation implements Runnable {
     public GroupAugmentationSimulation() {
 
         groupList = new ArrayList<>();
+
     }
 
     private final Logger log = LoggerFactory.getLogger(GroupAugmentationSimulation.class);
 
-
-    private final static int NUMBER_OF_GENERATIONS = 100;
 
     private int generation = 0;
 
@@ -25,18 +24,28 @@ public class GroupAugmentationSimulation implements Runnable {
 
     private IndividualList floaters;
 
+
     @Override
     public void run() {
         log.info("Starting simulation..");
-
+        this.initGroup();
 
         //TODO implement initial stuff
 
-        for (generation = 1; generation < NUMBER_OF_GENERATIONS; generation++) {
+        for (generation = 1; generation < Settings.NUMBER_OF_GENERATIONS; generation++) {
             for (Group group : groupList) {
                 group.run();
             }
 
+        }
+
+
+    }
+
+    private void initGroup() {
+
+        for (int i = 0; i < Settings.MAX_COLONIES; i++) {
+            groupList.add(new Group());
         }
 
 

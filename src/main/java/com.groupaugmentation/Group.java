@@ -12,16 +12,29 @@ public class Group implements Runnable {
 
     private boolean isBreederAlive;
 
-    private BigDecimal accumulativeHelp;
-    private BigDecimal fecundity;
+    private BigDecimal accumulativeHelp = null;
+    private BigDecimal fecundity = null;
 
-    private BigDecimal realFecundity;
+    private BigDecimal realFecundity = null;
 
 
     private Individual breeder;
 
     private IndividualList helpers;
 
+
+    public Group() {
+        this.breeder = new Individual(Settings.INIT_ALPHA, Settings.INIT_BETA, FishType.BREEDER);
+        this.isBreederAlive = true;
+
+        helpers = new IndividualList(FishType.HELPER);
+
+        for (int i = 0; i < Settings.INIT_NUMBER_OF_HELPERS; i++) {
+            helpers.add(new Individual(Settings.INIT_ALPHA, Settings.INIT_BETA));
+        }
+
+
+    }
 
     @Override
     public void run() {
