@@ -1,6 +1,5 @@
 package com.groupaugmentation;
 
-import java.math.BigDecimal;
 
 public interface Settings {
 
@@ -15,17 +14,17 @@ public interface Settings {
 
 
     //    //Fix values
-// double m         = 0.8;       // predation pressure
-////const double Pd        = 0.5;       // propensity to disperse
+    double PREDATION = 0.8;       // predation pressure
+    ////const double Pd        = 0.5;       // propensity to disperse
 //
 //// Modifiers (I might need to make them evolve too)
-////const double X0r    = 1; // inflexion point in the level of help formula for the influence of age
-////const double X0n    = 1; // inflexion point in the level of help formula for the influence of group size
-//const double K0     = 1; // min fecundity, fecundity when no help provided.
-//const double Xsh    = 1; // cost of help in survival
-//const double Xsr    = 1; // benefit of age in survival
-//const double Xss    = 1; // benefit of group size in survival
-//
+//    double X0R = 1; // inflexion point in the level of help formula for the influence of age
+//    double X0N = 1; // inflexion point in the level of help formula for the influence of group size
+//    double K0 = 1; // min fecundity, fecundity when no help provided.
+    double XSH = 1; // cost of help in survival
+    double XSR = 1; // benefit of age in survival
+    double XSN = 1; // benefit of group size in survival
+    //
 //
 //
 //Genetic values

@@ -37,14 +37,15 @@ public class Group implements Runnable {
 
     @Override
     public void run() {
+        breeder.run();
+        helpers.forEach(individual -> individual.run());
+
+
         //TODO implement realfecundity
         for (int i = 0; i < 2; i++) {
             Individual offspring = new Individual(breeder);
             helpers.add(offspring);
         }
-
-//
-
     }
 
 
@@ -66,4 +67,7 @@ public class Group implements Runnable {
     public IndividualList getHelpers() {
         return helpers;
     }
+
+
+
 }
