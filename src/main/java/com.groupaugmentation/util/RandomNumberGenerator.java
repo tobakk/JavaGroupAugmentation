@@ -1,79 +1,69 @@
 package com.groupaugmentation.util;
 
 import com.groupaugmentation.Settings;
-import org.apache.commons.math3.distribution.UniformIntegerDistribution;
-import org.apache.commons.math3.distribution.UniformRealDistribution;
-import org.apache.commons.math3.random.GaussianRandomGenerator;
-import org.apache.commons.math3.random.RandomGenerator;
 
-import java.math.BigDecimal;
 import java.util.Random;
 
 
 public class RandomNumberGenerator {
 
-
     private static RandomNumberGenerator instance;
 
-    private RandomGenerator rnd;
-
-    private GaussianRandomGenerator gaussianRandomGenerator;
-
-    private UniformRealDistribution uniformRealDistribution;
-
-    private UniformIntegerDistribution uniformIntegerDistribution;
-
-    private UniformRealDistribution uniformDoubleDistribution;
-
+    private Random randomNumberGenerator;
 
     private RandomNumberGenerator() {
-
-
-        Random random = new Random(3);
-
-
-        //initialize Uniform Random Number Generator
-        uniformRealDistribution = new UniformRealDistribution(0, 1);
-        uniformRealDistribution.reseedRandomGenerator(Settings.RNG_SEED);
-
-        //initialize Uniform Random Number Generator
-        uniformIntegerDistribution = new UniformIntegerDistribution(Settings.UNIFORM_REAL_LOWER_BOUND, Settings.UNIFORM_REAL_UPPER_BOUND);
-        uniformIntegerDistribution.reseedRandomGenerator(Settings.RNG_SEED + 1);
-
-
-        //initialize Uniform Random Number Generator
-        uniformDoubleDistribution = new UniformRealDistribution(Settings.UNIFORM_REAL_LOWER_BOUND, Settings.UNIFORM_REAL_UPPER_BOUND);
-        uniformDoubleDistribution.reseedRandomGenerator(Settings.RNG_SEED + 2);
-
+        randomNumberGenerator = new Random(Settings.RNG_SEED);
 
     }
 
     public double getNextRealUniform() {
-        return uniformRealDistribution.sample();
+        return randomNumberGenerator.nextDouble();
     }
 
 
-    public double getNextInitDriftNormal() {
-        //TODO implement
-        return 1;
+    public double getNextInitDriftUniform() {
+        return randomNumberGenerator.nextDouble() * Settings.MAX_INIT_DRIFT;
     }
+
+    //TODO ask supervisor if uniform or normal
+//    public double getNextInitDriftNormal() {
+//        return randomNumberGenerator.nextGaussian() * Settings.SD_INIT_DRIFT;
+//    }
 
 
     public double getNextGaussianAlpha() {
-        //TODO implement
-        return 1;
+        return randomNumberGenerator.nextGaussian() * Settings.STEP_ALPHA;
     }
 
     public double getNextGaussianBeta() {
-        //TODO implement
-        return 1;
+        return randomNumberGenerator.nextGaussian() * Settings.STEP_BETA;
     }
 
 
     public double getNextGaussianDrift() {
-        //TODO implement
-        return 1;
+        return randomNumberGenerator.nextGaussian() * Settings.STEP_DRIFT;
     }
+
+    public int getNextPoisson() {
+        double lambda = Settings.AVERAGE_FLOATER_SAMPLE;
+
+        double L = Math.exp(-lambda);
+        double p = 1.0;
+        int k = 0;
+
+        do {
+            k++;
+            p *= randomNumberGenerator.nextDouble();
+        } while (p > L);
+
+        return k - 1;
+    }
+
+    public void reset() {
+        instance = new RandomNumberGenerator();
+
+    }
+
 
     public static synchronized RandomNumberGenerator getInstance() {
         if (instance == null) {

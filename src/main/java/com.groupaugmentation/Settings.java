@@ -1,6 +1,5 @@
 package com.groupaugmentation;
 
-import java.math.BigDecimal;
 
 public interface Settings {
 
@@ -12,6 +11,12 @@ public interface Settings {
     int RNG_SEED = 1;
     int UNIFORM_REAL_UPPER_BOUND = 1;
     int UNIFORM_REAL_LOWER_BOUND = 0;
+
+    double SD_INIT_DRIFT = 100;
+    double MAX_INIT_DRIFT = 100;
+
+    double AVERAGE_FLOATER_SAMPLE = 50; ///average number of floaters sampled from the total ///Check first if there are enough floaters, take a proportion instead??
+
 
 
     //    //Fix values
@@ -30,20 +35,19 @@ public interface Settings {
 //
 //Genetic values
     double INIT_ALPHA = 0;    // starting value of alpha (in gen 0)
-    double MUTATION_ALPHA = 0.05;    // mutation rate in alpha for level of help
-    double STEP_ALPHA = 0.4;     // mutation step size in alpha for level of help
+    double MUTATION_ALPHA = 0.1;    // mutation rate in alpha for level of help
+    double STEP_ALPHA = 0.1;     // mutation step size in alpha for level of help
     double INIT_BETA = 0;     // starting value of beta (in gen 0)
-    double MUTATION_BETA = 0.05;    // mutation rate in beta for the propensity to disperse
-    double STEP_BETA = 0.4;     // mutation step size in beta for the propensity to disperse
-    double MUTATION_DRIFT = 0.05;    // mutation rate in the neutral genetic value to track level of relatedness
-    double STEP_DRIFT = 0.4;     // mutation step size in the neutral genetic value to track level of relatedness
+    double MUTATION_BETA = 0.1;    // mutation rate in beta for the propensity to disperse
+    double STEP_BETA = 0.1;     // mutation step size in beta for the propensity to disperse
+    double MUTATION_DRIFT = 0.1;    // mutation rate in the neutral genetic value to track level of relatedness
+    double STEP_DRIFT = 0.1;     // mutation step size in the neutral genetic value to track level of relatedness
 
     //const int minsurv     = 50;     // min number of individual that survive
 //
 //
 //
-//const double avFloatersSample = 10; ///average number of floaters sampled from the total ///Check first if there are enough floaters, take a proportion instead??
-//
+//const double
 //    enum classes {breeder, helper, floater};
 //
 //const int maxcolon     = 50;     // max number of groups or colonies --> breeding spots. Whole population size = maxcolon * (numhelp + 1)

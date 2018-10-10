@@ -38,6 +38,7 @@ public class Group implements Runnable {
     @Override
     public void run() {
         //TODO implement realfecundity
+        //TODO implement offspring function
         for (int i = 0; i < 2; i++) {
             Individual offspring = new Individual(breeder);
             helpers.add(offspring);

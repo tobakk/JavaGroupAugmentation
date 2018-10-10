@@ -5,7 +5,6 @@ import com.groupaugmentation.util.RandomNumberGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.math.BigDecimal;
 
 public class Individual {
 
@@ -72,7 +71,7 @@ public class Individual {
         this.fishType = FishType.HELPER;
         this.alpha = alpha;
         this.beta = beta;
-        this.drift = RandomNumberGenerator.getInstance().getNextInitDriftNormal();
+        this.drift = RandomNumberGenerator.getInstance().getNextInitDriftUniform();
 
         this.helpLevel = Math.abs(alpha);
         this.dispersal = Math.abs(beta);
