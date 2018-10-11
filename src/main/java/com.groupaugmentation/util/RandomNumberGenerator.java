@@ -72,5 +72,7 @@ public class RandomNumberGenerator {
         return instance;
     }
 
-
+    public Random getRandomNumberGenerator() {
+        return randomNumberGenerator;
+    }
 }

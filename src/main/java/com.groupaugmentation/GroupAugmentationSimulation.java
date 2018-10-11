@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -39,11 +40,13 @@ public class GroupAugmentationSimulation implements Runnable {
 
         for (generation = 1; generation < Settings.NUMBER_OF_GENERATIONS; generation++) {
             log.debug("Generation " + generation + " starting now!");
+            Collections.shuffle(groupList, RandomNumberGenerator.getInstance().getRandomNumberGenerator());
 
 
             this.dispersal();
-            this.survival();
             this.help();
+            this.survival();
+
             for (Group group : groupList) {
 
                 group.run();
@@ -102,35 +105,46 @@ public class GroupAugmentationSimulation implements Runnable {
 
     public void survival() {
         log.trace("survival() start");
+        this.survivalForFloaters();
+        this.survivalForNonFloaters();
+        log.trace("survival() end");
+    }
 
+    private void survivalForNonFloaters() {
         var rng = RandomNumberGenerator.getInstance();
-
-        floaters.forEach(floater -> {
-            var formulaSurvivalFloater = Settings.PREDATION / (1 + Math.pow(Math.E, -Settings.XSR * floater.getAge() - 1));
-
-            if (rng.getNextRealUniform() > formulaSurvivalFloater) {
-                log.trace("Floater is dead now: " + floater);
-                floaters.remove(floater);
-                deaths++;
-            } else {
-                floater.increaseAge();
-            }
-
-        });
-
         groupList.forEach(group -> {
             var groupSize = group.getHelpers().size() + 1;
             Stream.concat(group.getHelpers().stream(), Stream.of(group.getBreeder())).forEach(individual -> {
                 var formulaSurvival = Settings.PREDATION /
                         (1 + Math.pow(Math.E,
-                                -Settings.XSR * individual.getAge() - Settings.XSH * individual.getHelpLevel() - Settings.XSN * groupSize
+                                -Settings.XSR * individual.getAge() + Settings.XSH * individual.getHelpLevel() - Settings.XSN * groupSize
                         ));
                 if (rng.getNextRealUniform() > formulaSurvival) {
                     log.trace("Individual is dead now: " + individual);
 
                     if (individual.getFishType() == FishType.BREEDER) {
                         group.setBreeder(null);
-                        group.setBreederAlive(false);
+
+                        List<Individual> sample = new IndividualList(FishType.FLOATER);
+
+
+                        var sampleSize = RandomNumberGenerator.getInstance().getNextPoisson();
+                        log.trace("generate new Breeder with sampleSize: " + sampleSize);
+                        if (sampleSize >= floaters.size()) {
+                            floaters.forEach(floater -> sample.add(floater));
+                        } else {
+                            while (sample.size() < sampleSize) {
+                                var floater = floaters.get((int) (RandomNumberGenerator.getInstance().getNextRealUniform() * floaters.size()));
+
+                                if (!sample.contains(floater)) {
+                                    sample.add(floater);
+                                }
+                            }
+
+                            log.trace("Generated new Sample: " + sample.toString());
+
+                        }
+                        group.setNewBreeder(sample);
                     } else if (individual.getFishType() == FishType.HELPER) {
                         group.getHelpers().remove(individual);
                     } else {
@@ -141,13 +155,31 @@ public class GroupAugmentationSimulation implements Runnable {
                 } else {
                     individual.increaseAge();
                 }
-
             });
+        });
+    }
 
+    private void survivalForFloaters() {
+        var rng = RandomNumberGenerator.getInstance();
+
+        var toRemove = new IndividualList(FishType.FLOATER);
+
+        floaters.forEach(floater -> {
+            var formulaSurvivalFloater = Settings.PREDATION / (1 + Math.pow(Math.E, -Settings.XSR * floater.getAge() - 1));
+
+            if (rng.getNextRealUniform() > formulaSurvivalFloater) {
+                log.trace("Floater is dead now: " + floater);
+                toRemove.add(floater);
+                deaths++;
+            } else {
+                floater.increaseAge();
+            }
 
         });
-
-
-        log.trace("survival() end");
+        //remove dead floaters
+        for (Individual individual : toRemove) {
+            floaters.remove(individual);
+        }
     }
+
 }
