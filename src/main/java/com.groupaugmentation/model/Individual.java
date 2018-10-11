@@ -7,7 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-public class Individual implements Runnable {
+public class Individual {
 
     private final Logger log = LoggerFactory.getLogger(Individual.class);
 
@@ -131,8 +131,4 @@ public class Individual implements Runnable {
                 '}';
     }
 
-    @Override
-    public void run() {
-        this.age++;
-    }
 }

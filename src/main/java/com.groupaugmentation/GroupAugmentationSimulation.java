@@ -9,8 +9,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class GroupAugmentationSimulation implements Runnable {
@@ -33,15 +35,14 @@ public class GroupAugmentationSimulation implements Runnable {
 
     private int deaths = 0;
 
-
     @Override
     public void run() {
         log.info("Starting simulation..");
         this.initGroup();
 
-        //TODO implement initial stuff
 
         for (generation = 1; generation < Settings.NUMBER_OF_GENERATIONS; generation++) {
+            deaths = 0;
             log.debug("Generation " + generation + " starting now!");
             Collections.shuffle(groupList, RandomNumberGenerator.getInstance().getRandomNumberGenerator());
 
@@ -55,7 +56,7 @@ public class GroupAugmentationSimulation implements Runnable {
                 group.run();
             }
 
-
+            log.debug("There are " + deaths + " dead fish in Generation  " + generation);
         }
 
 
@@ -115,7 +116,10 @@ public class GroupAugmentationSimulation implements Runnable {
 
     private void survivalForNonFloaters() {
         var rng = RandomNumberGenerator.getInstance();
+
+
         groupList.forEach(group -> {
+            var toRemove = new IndividualList(FishType.HELPER);
             var groupSize = group.getHelpers().size() + 1;
             Stream.concat(group.getHelpers().stream(), Stream.of(group.getBreeder())).forEach(individual -> {
                 var formulaSurvival = Settings.PREDATION /
@@ -147,9 +151,9 @@ public class GroupAugmentationSimulation implements Runnable {
                             log.trace("Generated new Sample: " + sample.toString());
 
                         }
-                        group.setNewBreeder(sample);
+                        group.setBreeder(this.findNewBreeder(sample, group));
                     } else if (individual.getFishType() == FishType.HELPER) {
-                        group.getHelpers().remove(individual);
+                        toRemove.add(individual);
                     } else {
                         log.error("something went wrong in survival");
                     }
@@ -159,7 +163,12 @@ public class GroupAugmentationSimulation implements Runnable {
                     individual.increaseAge();
                 }
             });
+            //remove dead helpers
+            for (Individual individual : toRemove) {
+                group.getHelpers().remove(individual);
+            }
         });
+
     }
 
     private void survivalForFloaters() {
@@ -183,6 +192,54 @@ public class GroupAugmentationSimulation implements Runnable {
         for (Individual individual : toRemove) {
             floaters.remove(individual);
         }
+    }
+
+    public Individual findNewBreeder(Collection<Individual> sample, Group group) {
+
+
+        var helpers = group.getHelpers();
+        final var rng = RandomNumberGenerator.getInstance();
+
+        //this calculates the cumulative age
+        int cumulativeAge = Stream.concat(sample.stream(), helpers.stream()).mapToInt(Individual::getAge).sum();
+        log.trace("Cumulative age is: " + cumulativeAge);
+
+        List<Individual> candidates = Stream.concat(sample.stream(), helpers.stream())
+                .collect(Collectors.toList());
+
+        Individual choosenOne = null;
+
+        while (choosenOne == null) {
+            Collections.shuffle(candidates, rng.getRandomNumberGenerator());
+
+            for (Individual candidate : candidates) {
+                double probability = (double) candidate.getAge() / (double) cumulativeAge;
+
+                double draw = rng.getNextRealUniform();
+
+                if (draw < probability) {
+                    log.trace("Found a new Breeder candidate!");
+
+                    if (candidate.getFishType() == FishType.HELPER) {
+                        helpers.remove(candidate);
+                    } else if (candidate.getFishType() == FishType.FLOATER) {
+                        //remove floater
+                        this.floaters.remove(candidate);
+                    }
+                    choosenOne = candidate;
+
+                    choosenOne.setFishType(FishType.BREEDER);
+                    return choosenOne;
+
+                }
+
+
+            }
+
+
+        }
+        log.error("this should never be reached");
+        return null;
     }
 
 }
