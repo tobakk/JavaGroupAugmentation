@@ -41,7 +41,7 @@ public class Group implements Runnable {
 
         //TODO implement realfecundity
         //TODO implement offspring function
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 1000; i++) {
             Individual offspring = new Individual(breeder);
             helpers.add(offspring);
         }
@@ -75,5 +75,14 @@ public class Group implements Runnable {
         this.breeder = breeder;
     }
 
-
+    @Override
+    public String toString() {
+        return "Group{" +
+                "accumulativeHelp=" + accumulativeHelp +
+                ", fecundity=" + fecundity +
+                ", realFecundity=" + realFecundity +
+                ", breeder=" + breeder +
+                ", helpers=" + helpers +
+                '}';
+    }
 }

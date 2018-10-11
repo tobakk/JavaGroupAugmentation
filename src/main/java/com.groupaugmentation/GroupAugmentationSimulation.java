@@ -50,7 +50,7 @@ public class GroupAugmentationSimulation implements Runnable {
             this.dispersal();
             this.help();
             this.survival();
-
+            this.reassignFloaters();
             for (Group group : groupList) {
 
                 group.run();
@@ -240,6 +240,26 @@ public class GroupAugmentationSimulation implements Runnable {
         }
         log.error("this should never be reached");
         return null;
+    }
+
+    public void reassignFloaters() {
+
+        var rng = RandomNumberGenerator.getInstance();
+
+        var toRemove = new ArrayList<Individual>();
+
+        floaters.forEach(floater -> {
+            toRemove.add(floater);
+            floater.setFishType(FishType.HELPER);
+
+            double index = rng.getNextRealUniform() * (double) Settings.MAX_COLONIES;
+
+            var randomGroup = groupList.get((int) index);
+
+            randomGroup.getHelpers().add(floater);
+        });
+
+        toRemove.forEach(i -> floaters.remove(i));
     }
 
 }

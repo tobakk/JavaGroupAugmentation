@@ -127,8 +127,8 @@ public class Individual {
                 ", drift=" + drift +
                 ", helpLevel=" + helpLevel +
                 ", dispersal=" + dispersal +
+                ", age=" + age +
                 ", fishType=" + fishType +
                 '}';
     }
-
 }
