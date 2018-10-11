@@ -2,13 +2,15 @@ package com.groupaugmentation.model;
 
 import com.groupaugmentation.Settings;
 import com.groupaugmentation.util.IndividualList;
+import com.groupaugmentation.util.RandomNumberGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Set;
 import java.util.stream.Stream;
 
 
-public class Group implements Runnable {
+public class Group {
 
     private final Logger log = LoggerFactory.getLogger(Group.class);
 
@@ -36,17 +38,6 @@ public class Group implements Runnable {
         }
     }
 
-    @Override
-    public void run() {
-
-        //TODO implement realfecundity
-        //TODO implement offspring function
-        for (int i = 0; i < 1000; i++) {
-            Individual offspring = new Individual(breeder);
-            helpers.add(offspring);
-        }
-    }
-
 
     public void calculateCumulativeHelp() {
         log.trace("calculating cumulative help");
@@ -59,6 +50,21 @@ public class Group implements Runnable {
         //calculate cumulative help
         this.accumulativeHelp = Stream.concat(helpers.stream(), Stream.of(breeder)).mapToDouble(Individual::getHelpLevel).sum();
         log.trace("Cumulative Help is: " + this.accumulativeHelp);
+    }
+
+    private void calculateFecundity() {
+        final var rng = RandomNumberGenerator.getInstance();
+        fecundity = Settings.K0 + this.accumulativeHelp;
+        realFecundity = rng.getNextPoisson(fecundity);
+    }
+
+
+    public void reproduce() {
+        this.calculateFecundity();
+        for (int i = 0; i < realFecundity; i++) {
+            Individual offspring = new Individual(this.breeder);
+            this.helpers.add(offspring);
+        }
     }
 
     public IndividualList getHelpers() {

@@ -44,9 +44,17 @@ public class RandomNumberGenerator {
         return randomNumberGenerator.nextGaussian() * Settings.STEP_DRIFT;
     }
 
-    public int getNextPoisson() {
-        double lambda = Settings.AVERAGE_FLOATER_SAMPLE;
+    public int getNextPoissonAverageFloater() {
+        return this.getNextPoisson(Settings.AVERAGE_FLOATER_SAMPLE);
+    }
 
+    public void reset() {
+        instance = new RandomNumberGenerator();
+
+    }
+
+
+    public int getNextPoisson(double lambda) {
         double L = Math.exp(-lambda);
         double p = 1.0;
         int k = 0;
@@ -57,11 +65,6 @@ public class RandomNumberGenerator {
         } while (p > L);
 
         return k - 1;
-    }
-
-    public void reset() {
-        instance = new RandomNumberGenerator();
-
     }
 
 

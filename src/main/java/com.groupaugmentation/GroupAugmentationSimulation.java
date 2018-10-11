@@ -51,11 +51,7 @@ public class GroupAugmentationSimulation implements Runnable {
             this.help();
             this.survival();
             this.reassignFloaters();
-            for (Group group : groupList) {
-
-                group.run();
-            }
-
+            this.reproduction();
             log.debug("There are " + deaths + " dead fish in Generation  " + generation);
         }
 
@@ -135,7 +131,7 @@ public class GroupAugmentationSimulation implements Runnable {
                         List<Individual> sample = new IndividualList(FishType.FLOATER);
 
 
-                        var sampleSize = RandomNumberGenerator.getInstance().getNextPoisson();
+                        var sampleSize = RandomNumberGenerator.getInstance().getNextPoissonAverageFloater();
                         log.trace("generate new Breeder with sampleSize: " + sampleSize);
                         if (sampleSize >= floaters.size()) {
                             floaters.forEach(floater -> sample.add(floater));
@@ -261,5 +257,13 @@ public class GroupAugmentationSimulation implements Runnable {
 
         toRemove.forEach(i -> floaters.remove(i));
     }
+
+    public void reproduction() {
+        groupList.forEach(group -> {
+            group.reproduce();
+        });
+
+    }
+
 
 }

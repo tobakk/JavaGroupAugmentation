@@ -29,7 +29,7 @@ public class RandomNumberGeneratorImplTest {
         var expectedGaussianAlpha = generator.getNextGaussianAlpha();
         var expectedGaussianBeta = generator.getNextGaussianBeta();
         var expectedGaussianDrift = generator.getNextGaussianDrift();
-        var expectedPoisson = generator.getNextPoisson();
+        var expectedPoisson = generator.getNextPoissonAverageFloater();
 
         generator.reset();
         generator = RandomNumberGenerator.getInstance();
@@ -40,7 +40,7 @@ public class RandomNumberGeneratorImplTest {
         assertEquals(expectedGaussianAlpha, generator.getNextGaussianAlpha(), 0);
         assertEquals(expectedGaussianBeta, generator.getNextGaussianBeta(), 0);
         assertEquals(expectedGaussianDrift, generator.getNextGaussianDrift(), 0);
-        assertEquals(expectedPoisson, generator.getNextPoisson(), 0);
+        assertEquals(expectedPoisson, generator.getNextPoissonAverageFloater(), 0);
 
     }
 
@@ -62,7 +62,7 @@ public class RandomNumberGeneratorImplTest {
             generator.getNextGaussianAlpha();
             generator.getNextGaussianBeta();
             generator.getNextGaussianDrift();
-            generator.getNextPoisson();
+            generator.getNextPoissonAverageFloater();
 
         }
     }

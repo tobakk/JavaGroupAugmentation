@@ -15,7 +15,7 @@ public interface Settings {
     double SD_INIT_DRIFT = 100;
     double MAX_INIT_DRIFT = 100;
 
-    double AVERAGE_FLOATER_SAMPLE = 50; ///average number of floaters sampled from the total ///Check first if there are enough floaters, take a proportion instead??
+    double AVERAGE_FLOATER_SAMPLE = 10; ///average number of floaters sampled from the total ///Check first if there are enough floaters, take a proportion instead??
 
 
 
@@ -26,7 +26,7 @@ public interface Settings {
 //// Modifiers (I might need to make them evolve too)
 //    double X0R = 1; // inflexion point in the level of help formula for the influence of age
 //    double X0N = 1; // inflexion point in the level of help formula for the influence of group size
-//    double K0 = 1; // min fecundity, fecundity when no help provided.
+    double K0 = 1; // min fecundity, fecundity when no help provided.
     double XSH = 1; // cost of help in survival
     double XSR = 1; // benefit of age in survival
     double XSN = 1; // benefit of group size in survival
