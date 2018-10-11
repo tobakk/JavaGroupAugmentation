@@ -3,3 +3,7 @@ build
 *.iml
 out
 vcs.xml
+*.gradle
+.gradle
+*.bin
+*.lock
