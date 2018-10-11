@@ -1,5 +1,8 @@
 package com.groupaugmentation;
 
+import com.groupaugmentation.model.FishType;
+import com.groupaugmentation.model.Group;
+import com.groupaugmentation.model.Individual;
 import com.groupaugmentation.util.IndividualList;
 import com.groupaugmentation.util.RandomNumberGenerator;
 import org.slf4j.Logger;

@@ -1,6 +1,7 @@
-package com.groupaugmentation;
+package com.groupaugmentation.model;
 
 
+import com.groupaugmentation.Settings;
 import com.groupaugmentation.util.RandomNumberGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

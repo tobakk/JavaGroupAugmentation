@@ -1,7 +1,7 @@
 package com.groupaugmentation.util;
 
-import com.groupaugmentation.FishType;
-import com.groupaugmentation.Individual;
+import com.groupaugmentation.model.FishType;
+import com.groupaugmentation.model.Individual;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
