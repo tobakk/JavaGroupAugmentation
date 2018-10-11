@@ -35,10 +35,16 @@ public class GroupAugmentationSimulation implements Runnable {
         //TODO implement initial stuff
 
         for (generation = 1; generation < Settings.NUMBER_OF_GENERATIONS; generation++) {
+            this.dispersal();
+
             for (Group group : groupList) {
+                group.survival();
+
+
+
                 group.run();
             }
-            this.dispersal();
+
 
         }
 
@@ -84,5 +90,15 @@ public class GroupAugmentationSimulation implements Runnable {
         groupList.forEach(group -> log.trace("Helper Size: " + group.getHelpers().size()));
         log.trace("Floater Size: " + floaters.size());
         log.trace("dispersal() end");
+    }
+
+
+    public void survival() {
+        log.trace("survival() start");
+
+
+
+        var formulaSurvival = Settings.PREDATION / (1 + Math.pow(Math.E, Settings.XSH * ))
+        log.trace("survival() end");
     }
 }
