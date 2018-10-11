@@ -110,6 +110,13 @@ public class Individual implements Runnable {
         this.fishType = fishType;
     }
 
+    public int getAge() {
+        return age;
+    }
+
+    public void increaseAge() {
+        this.age++;
+    }
 
     @Override
     public String toString() {

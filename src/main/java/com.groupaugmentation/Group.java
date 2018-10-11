@@ -69,6 +69,15 @@ public class Group implements Runnable {
         return helpers;
     }
 
+    public Individual getBreeder() {
+        return breeder;
+    }
 
+    public void setBreederAlive(boolean breederAlive) {
+        isBreederAlive = breederAlive;
+    }
 
+    public void setBreeder(Individual breeder) {
+        this.breeder = breeder;
+    }
 }

@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 public class GroupAugmentationSimulation implements Runnable {
 
@@ -26,6 +27,8 @@ public class GroupAugmentationSimulation implements Runnable {
 
     private IndividualList floaters;
 
+    private int deaths = 0;
+
 
     @Override
     public void run() {
@@ -35,12 +38,13 @@ public class GroupAugmentationSimulation implements Runnable {
         //TODO implement initial stuff
 
         for (generation = 1; generation < Settings.NUMBER_OF_GENERATIONS; generation++) {
+            log.debug("Generation " + generation + " starting now!");
+
+
             this.dispersal();
-
+            this.survival();
+            this.help();
             for (Group group : groupList) {
-                group.survival();
-
-
 
                 group.run();
             }
@@ -92,13 +96,58 @@ public class GroupAugmentationSimulation implements Runnable {
         log.trace("dispersal() end");
     }
 
+    public void help() {
+        this.groupList.forEach(group -> group.calculateCumulativeHelp());
+    }
 
     public void survival() {
         log.trace("survival() start");
 
+        var rng = RandomNumberGenerator.getInstance();
+
+        floaters.forEach(floater -> {
+            var formulaSurvivalFloater = Settings.PREDATION / (1 + Math.pow(Math.E, -Settings.XSR * floater.getAge() - 1));
+
+            if (rng.getNextRealUniform() > formulaSurvivalFloater) {
+                log.trace("Floater is dead now: " + floater);
+                floaters.remove(floater);
+                deaths++;
+            } else {
+                floater.increaseAge();
+            }
+
+        });
+
+        groupList.forEach(group -> {
+            var groupSize = group.getHelpers().size() + 1;
+            Stream.concat(group.getHelpers().stream(), Stream.of(group.getBreeder())).forEach(individual -> {
+                var formulaSurvival = Settings.PREDATION /
+                        (1 + Math.pow(Math.E,
+                                -Settings.XSR * individual.getAge() - Settings.XSH * individual.getHelpLevel() - Settings.XSN * groupSize
+                        ));
+                if (rng.getNextRealUniform() > formulaSurvival) {
+                    log.trace("Individual is dead now: " + individual);
+
+                    if (individual.getFishType() == FishType.BREEDER) {
+                        group.setBreeder(null);
+                        group.setBreederAlive(false);
+                    } else if (individual.getFishType() == FishType.HELPER) {
+                        group.getHelpers().remove(individual);
+                    } else {
+                        log.error("something went wrong in survival");
+                    }
+
+                    deaths++;
+                } else {
+                    individual.increaseAge();
+                }
+
+            });
 
 
-        var formulaSurvival = Settings.PREDATION / (1 + Math.pow(Math.E, Settings.XSH * ))
+        });
+
+
         log.trace("survival() end");
     }
 }
